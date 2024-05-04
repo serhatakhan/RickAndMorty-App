@@ -21,7 +21,7 @@ export const characterStyle = StyleSheet.create({
   nameContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 5
+    marginTop: 5,
   },
   aliveStatusContainer: {
     backgroundColor: Colors.TABICON,
@@ -54,13 +54,35 @@ export const characterStyle = StyleSheet.create({
   },
   sectionTitle: {
     color: Colors.DETAIL,
-    textAlign: "center",
+    textAlign: 'center',
     marginVertical: 10,
-    fontSize: 15,
-    fontWeight: "500"
+    fontSize: 16,
+    fontWeight: '600',
   },
   sectionContainer: {
-    margin:5,
-    paddingHorizontal: 10
-  }
+    margin: 5,
+    paddingHorizontal: 10,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 4,
+  },
+  infoContainer: {
+    backgroundColor: Colors.BGTAB,
+    padding: 10,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  infoBox: {
+    backgroundColor: Colors.DETAIL2,
+    padding: 10,
+    marginLeft: 10,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 2,
+  },
 });

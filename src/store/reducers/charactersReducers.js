@@ -1,10 +1,12 @@
 import {
+  CHANGE_PARAMS,
   FETCH_CHARACTER,
   FETCH_SINGLECHARACTER,
   PENDING_CHARACTER,
   PENDING_SINGLECHARACTER,
   REJECT_CHARACTER,
   REJECT_SINGLECHARACTER,
+  RESET_DATA,
 } from '../types/characterTypes';
 
 const initialState = {
@@ -14,6 +16,9 @@ const initialState = {
   singleCharacter: {}, // gelecek veri obje olduğu için boş obje tanımla
   pendingSingleCharacter: false,
   errorSingleCharacter: null,
+  params: {  // bu parametreyi, listeye istek atarken kullanacağız.
+    page: 1,
+  }
 };
 
 const characterReducer = (state = initialState, action) => {
@@ -52,6 +57,21 @@ const characterReducer = (state = initialState, action) => {
         ...state,
         pendingSingleCharacter: false,
         errorSingleCharacter: action.payload,
+      };
+
+    case RESET_DATA:
+      return {
+        ...state,
+        pendingSingleCharacter: false,
+        errorSingleCharacter: null,
+        singleCharacter: {}
+      };
+
+    case CHANGE_PARAMS:
+      return {
+        ...state,
+        params: action.params,
+        // bu sefer payload değil de params diye gönderdik
       };
     default:
       return state;

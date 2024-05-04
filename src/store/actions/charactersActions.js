@@ -1,12 +1,14 @@
 import {CHARACTERS_URL} from '../../service/urls';
 import {getRequest} from '../../service/verbs';
 import {
+  CHANGE_PARAMS,
   FETCH_CHARACTER,
   FETCH_SINGLECHARACTER,
   PENDING_CHARACTER,
   PENDING_SINGLECHARACTER,
   REJECT_CHARACTER,
   REJECT_SINGLECHARACTER,
+  RESET_DATA,
 } from '../types/characterTypes';
 
 export const getCharacterList = params => {
@@ -16,7 +18,7 @@ export const getCharacterList = params => {
 
     try {
       // karakterleri almak için istek at
-      const response = await getRequest(CHARACTERS_URL);
+      const response = await getRequest(CHARACTERS_URL, params); // yanına da parametreleri ekle
       // console.log(response.data.results);
       dispatch({
         type: FETCH_CHARACTER,
@@ -52,5 +54,23 @@ export const getSingleCharacter = id => {
         error: error,
       });
     }
+  };
+};
+
+// bu aksiyon bizim verilerimizi sıfırlayacak
+export const resetData = () => {
+  return async dispatch => {
+    dispatch({type: RESET_DATA})
+  };
+};
+
+// listenin sonuna gelindiğinde yeni karakterleri almak için action
+export const changeParams = (params) => {
+  // console.log(">>>",params);
+  return async dispatch => {
+    dispatch({
+      type: CHANGE_PARAMS,
+      params: params  // dışardan gelen parametreleri reducera params diye yolla
+    })
   };
 };

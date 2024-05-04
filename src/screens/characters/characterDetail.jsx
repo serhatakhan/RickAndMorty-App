@@ -2,7 +2,7 @@ import React, {Component, useEffect} from 'react';
 import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import {screenStyle} from '../../styles/screensStyle';
 import {useDispatch, useSelector} from 'react-redux';
-import {getSingleCharacter} from '../../store/actions/charactersActions';
+import {getSingleCharacter, resetData} from '../../store/actions/charactersActions';
 import Spinner from '../../components/ui/spinner';
 import { characterStyle } from '../../styles/characterStyle';
 import { statusTypes } from '../../utils/constants';
@@ -18,12 +18,23 @@ const CharacterDetail = ({route}) => {
 
   useEffect(() => {
     dispatch(getSingleCharacter(characterID));
+
+    // başka ekrana geçince veriler de silinsin istedik
+    return ()=> {
+        dispatch(resetData());
+    }
   }, []);
   /*
   * Bu useEffect sadece component monte edildiğinde (ilk render) çalışır ve bir abonelik 
   veya event listener gibi sürekli takip edilmesi gereken bir işlem başlatmıyor. 
   Dolayısıyla, return ile bir cleanup işlemi yapmanın burada bir faydası yoktur.
   */
+
+  const originalDate = singleCharacter.created; // apiden gelen tarihi al değişken at
+  const dateObj = new Date(originalDate);
+  // Tarihi gün-ay-yıl şeklinde formatla
+  const formattedDate = `${dateObj.getDate().toString()}-${(dateObj.getMonth() + 1).toString()}-${dateObj.getFullYear()}`;
+
 
   return (
     <View style={screenStyle.container}>
@@ -43,62 +54,74 @@ const CharacterDetail = ({route}) => {
             </View>
           </View>
 
+        {/* character name */}
         <View style={characterStyle.nameContainer}>
           <Text style={characterStyle.name}>{singleCharacter.name}</Text>
         </View>
 
+        {/* properties */}
         <View style={characterStyle.sectionContainer}>
             <Text style={characterStyle.sectionTitle}>PROPERTIES</Text>
-            <View style={{flexDirection:"row", justifyContent: "center", marginVertical: 4}}>
-                <View style={{backgroundColor: Colors.BGTAB, padding: 10, borderRadius: 6, justifyContent: "center", alignItems: "center", flex: 1}}>
+            <View style={characterStyle.rowContainer}>
+                <View style={characterStyle.infoContainer}>
                     <Text>Gender</Text>
                 </View>
-                <View style={{backgroundColor: Colors.DETAIL2, padding: 10, marginLeft: 10, borderRadius: 6, justifyContent: "center", alignItems: "center", flex:2}}>
+                <View style={characterStyle.infoBox}>
                     <Text>{singleCharacter.gender}</Text>
                 </View>
             </View>
-            <View style={{flexDirection:"row", justifyContent: "center", marginVertical: 4}}>
-                <View style={{backgroundColor: Colors.BGTAB, padding: 10, borderRadius: 6, justifyContent: "center", alignItems: "center", flex: 1}}>
+            <View style={characterStyle.rowContainer}>
+                <View style={characterStyle.infoContainer}>
                     <Text>Species</Text>
                 </View>
-                <View style={{backgroundColor: Colors.DETAIL2, padding: 10, marginLeft: 10, borderRadius: 6, flex:2, justifyContent: "center", alignItems: "center"}}>
+                <View style={characterStyle.infoBox}>
                     <Text>{singleCharacter.species}</Text>
                 </View>
             </View>
-            <View style={{flexDirection:"row", justifyContent: "center", marginVertical: 4}}>
-                <View style={{backgroundColor: Colors.BGTAB, padding: 10, borderRadius: 6, justifyContent: "center", alignItems: "center", flex: 1}}>
+            <View style={characterStyle.rowContainer}>
+                <View style={characterStyle.infoContainer}>
                     <Text>Status</Text>
                 </View>
-                <View style={{backgroundColor: Colors.DETAIL2, padding: 10, marginLeft: 10, borderRadius: 6,justifyContent: "center", alignItems: "center", flex:2}}>
+                <View style={characterStyle.infoBox}>
                     <Text>{singleCharacter.status}</Text>
                 </View>
             </View>
         </View>
 
+        {/* whereabouts */}
         <View style={characterStyle.sectionContainer}>
             <Text style={characterStyle.sectionTitle}>WHEREABOUTS</Text>
-            <View style={{flexDirection:"row", justifyContent: "center", marginVertical: 4}}>
-                <View style={{backgroundColor: Colors.BGTAB, padding: 10, borderRadius: 6, justifyContent: "center", alignItems: "center", flex: 1}}>
+            <View style={characterStyle.rowContainer}>
+                <View style={characterStyle.infoContainer}>
                     <Text>Origin</Text>
                 </View>
-                <View style={{backgroundColor: Colors.DETAIL2, padding: 10, marginLeft: 10, borderRadius: 6,justifyContent: "center", alignItems: "center", flex:2}}>
-                    <Text>{singleCharacter.origin.name}</Text>
+                <View style={characterStyle.infoBox}>
+                    {/* obje içindeki verileri okuyorsak ? koymayı unutma. olmayadabilir undefined olur ve patlar uygulama !! */}
+                    <Text>{singleCharacter?.origin?.name}</Text>
                 </View>
             </View>
-            <View style={{flexDirection:"row", justifyContent: "center", marginVertical: 4}}>
-                <View style={{backgroundColor: Colors.BGTAB, padding: 10, borderRadius: 6, justifyContent: "center", alignItems: "center", flex: 1}}>
+            <View style={characterStyle.rowContainer}>
+                <View style={characterStyle.infoContainer}>
                     <Text>Location</Text>
                 </View>
-                <View style={{backgroundColor: Colors.DETAIL2, padding: 10, marginLeft: 10, borderRadius: 6,justifyContent: "center", alignItems: "center", flex:2}}>
-                    <Text>{singleCharacter.location.name}</Text>
+                <View style={characterStyle.infoBox}>
+                    <Text>{singleCharacter?.location?.name}</Text>
                 </View>
             </View>
         </View>
 
+        {/* featured chapters */}
         <View style={characterStyle.sectionContainer}>
-            <Text style={characterStyle.sectionTitle}>FEATURED CHAPTERS</Text>
+            <Text style={characterStyle.sectionTitle}>CREATED</Text>
+            <View style={characterStyle.rowContainer}>
+                <View style={characterStyle.infoContainer}>
+                    <Text>Created</Text>
+                </View>
+                <View style={characterStyle.infoBox}>
+                    <Text>{formattedDate}</Text>
+                </View>
+            </View>
         </View>
-
         </ScrollView>
       )}
     </View>
