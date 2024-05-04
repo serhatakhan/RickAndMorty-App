@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import Colors from '../../theme/colors';
 import GenderIcon from './genderIcon';
+import {useNavigation} from '@react-navigation/native';
+import {CHARACTERDETAILS} from '../../utils/routes';
 
 const CharacterCard = ({item}) => {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      //item'ın içindeki id'yi, characterID adıyla gönder
+      onPress={() => navigation.navigate(CHARACTERDETAILS, {characterID: item.id})}>
       <View style={styles.imageContainer}>
         <Image source={{uri: item.image}} style={styles.image} />
       </View>
@@ -16,11 +23,11 @@ const CharacterCard = ({item}) => {
         <Text style={styles.species}>{item.species}</Text>
         <View style={styles.statusContainer}>
           <View>
-            <Text style={styles.status} >{item.status}</Text>
+            <Text style={styles.status}>{item.status}</Text>
           </View>
           <View style={styles.genderContainer}>
             <GenderIcon size={22} gender={item.gender} />
-            <Text style={styles.gender} >{item.gender}</Text>
+            <Text style={styles.gender}>{item.gender}</Text>
           </View>
         </View>
       </View>
@@ -28,7 +35,7 @@ const CharacterCard = ({item}) => {
       <View style={styles.iconContainer}>
         <Icon name="arrow-right" size={24} color={Colors.BGTAB} />
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -44,11 +51,12 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 2,
-    justifyContent:"space-around",
+    justifyContent: 'space-around',
   },
   name: {
     fontSize: 18,
     fontWeight: '600',
+    color: Colors.DARK
   },
   species: {
     fontSize: 16,
@@ -58,8 +66,8 @@ const styles = StyleSheet.create({
   statusContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: "center",
-    gap:5
+    alignItems: 'center',
+    gap: 5,
   },
   iconContainer: {
     flex: 1,
@@ -67,26 +75,26 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   image: {
-    width: 125,
-    height: 145,
+    width: 120,
+    height: 135,
     borderRadius: 10,
   },
-  status:{
+  status: {
     fontSize: 16,
     color: 'gray',
     fontWeight: '500',
-    textTransform: "capitalize"
+    textTransform: 'capitalize',
   },
-  gender:{
+  gender: {
     fontSize: 16,
     color: 'gray',
     fontWeight: '500',
   },
-  genderContainer:{
-    flexDirection: "row",
-    alignItems: "center",
-    gap:2
-  }
+  genderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+  },
 });
 
 export default CharacterCard;

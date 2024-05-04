@@ -1,13 +1,33 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigator from './tabRouter';
-import {TABNAVIGATOR} from '../utils/routes';
+import {CHARACTERDETAILS, TABNAVIGATOR} from '../utils/routes';
+import CharacterDetail from '../screens/characters/characterDetail';
+import Colors from '../theme/colors';
+import Icon from 'react-native-vector-icons/FontAwesome6';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
 function RootNavigator() {
+  const navigation = useNavigation();
+
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name={TABNAVIGATOR} component={TabNavigator} />
+    <Stack.Navigator>
+      <Stack.Screen name={TABNAVIGATOR} component={TabNavigator}
+        options={{headerShown: false}} />
+      <Stack.Screen name={CHARACTERDETAILS} component={CharacterDetail}
+        options={{
+          headerBackTitleVisible: false,
+          headerShadowVisible: false,
+          headerStyle: {backgroundColor: Colors.BGCOLOR},
+          headerTitle: '', //ortadaki başlık yazısını kaldır
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="arrow-left-long" size={26} color={Colors.DARK} />
+            </TouchableOpacity>
+          ),
+        }} />
     </Stack.Navigator>
   );
 }

@@ -1,10 +1,12 @@
 const Colors = {
     BGCOLOR:"#f8f8f8",
     BG2:"#e4a788",
-    BGTAB:"#13ACC8",
+    BGTAB:"#e89ac7",
     TABICON:"#f0e14a",
-    BLACK:"#000",
-    WHITE:"#fff"
+    DARK:"#44281d",
+    WHITE:"#fff",
+    DETAIL: "#e4a788",
+    DETAIL2: "#97ce4c"
 }
 
 export default Colors

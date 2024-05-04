@@ -5,7 +5,7 @@ import Colors from '../../theme/colors';
 const Spinner = () => {
     return (
         <View style={styles.container}>
-            <ActivityIndicator size={"large"} color={Colors.BGTAB} />
+            <ActivityIndicator size={"large"} color={Colors.DARK} />
             <Text style={styles.text}>Loading...</Text>
         </View>
     );
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     text:{
         fontSize: 18,
         fontWeight: "600",
-        marginTop: 10
+        marginTop: 10,
+        color: Colors.DARK
     }
 });
 
