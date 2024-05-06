@@ -1,25 +1,32 @@
 import React, {useEffect} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import {screenStyle} from '../../styles/screensStyle';
 import {useDispatch, useSelector} from 'react-redux';
-import {changeParams, getCharacterList} from '../../store/actions/charactersActions';
+import {
+  changeParams,
+  getCharacterList,
+  loadMoreCharacter,
+} from '../../store/actions/charactersActions';
 import Spinner from '../../components/ui/spinner';
 import CharacterCard from '../../components/characters/characterCard';
+import HeaderRight from '../../components/router/headerRight';
 
 const Characters = () => {
-  const {characterList, pending, params} = useSelector(state => state.characters);
+  const {characterList, pending, params} = useSelector( state => state.characters);
   // console.log(characterList, pending);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCharacterList(params));
-  }, []);
+  }, [params]); // params verisi değiştiğinde tekrar istek at !
 
   const handleLoadMore = () => {
-    let changedParams = params.page + 1
-    dispatch(changeParams({page: changedParams}))
-    console.log(changedParams);
-  }
+    let changedPage = params.page + 1;
+    let newCount = params.count + 20
+    dispatch(changeParams({page: changedPage, count: newCount}));
+    dispatch(loadMoreCharacter(params));
+    // console.log(params);
+  };
 
   return (
     <View style={screenStyle.container}>
@@ -27,18 +34,21 @@ const Characters = () => {
       {pending ? (
         <Spinner />
       ) : (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={characterList}
-          renderItem={({item}) => <CharacterCard item={item} />}
-          // listenin sonuna geldiğimizde yeni verilerin geldiğini gösteren spinner ekle
-          ListFooterComponent={<Spinner />}
-          // onEndReachedThreshold={0.5} -> Kullanıcı listenin yarısına geldiğinde yeni elemanlar yüklensin. 
-          // Bu özellik, onEndReached olayının ne zaman tetikleneceğini belirler ve onEndReached olayı, listenin sonuna geldiğinde veya eşik değerine ulaştığında gerçekleşir. 
-          onEndReachedThreshold={0.5}
-          // Atacağı isteği de onEndReached içine yazdığımız fonk. ile yap. handleLoadMore ismini biz verdik
-          onEndReached={handleLoadMore}
-        />
+        <>
+          <HeaderRight />
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={characterList}
+            renderItem={({item}) => <CharacterCard item={item} key={item.id} />}
+            // listenin sonuna geldiğimizde yeni verilerin geldiğini gösteren spinner ekle
+            ListFooterComponent={<Spinner />}
+            // * onEndReachedThreshold={0.5} -> Kullanıcı listenin yarısına geldiğinde yeni elemanlar yüklensin.
+            // Bu özellik, onEndReached olayının ne zaman tetikleneceğini belirler ve onEndReached olayı, listenin sonuna geldiğinde veya eşik değerine ulaştığında gerçekleşir.
+            onEndReachedThreshold={0.3}
+            // Atacağı isteği de onEndReached içine yazdığımız fonk. ile yap. handleLoadMore ismini biz verdik
+            onEndReached={handleLoadMore}
+          />
+        </>
       )}
     </View>
   );

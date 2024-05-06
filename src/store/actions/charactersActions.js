@@ -4,6 +4,7 @@ import {
   CHANGE_PARAMS,
   FETCH_CHARACTER,
   FETCH_SINGLECHARACTER,
+  LOAD_MORE,
   PENDING_CHARACTER,
   PENDING_SINGLECHARACTER,
   REJECT_CHARACTER,
@@ -18,10 +19,29 @@ export const getCharacterList = params => {
 
     try {
       // karakterleri almak için istek at
-      const response = await getRequest(CHARACTERS_URL, params); // yanına da parametreleri ekle
+      const response = await getRequest(CHARACTERS_URL, params); // yanına parametreleri ekle
       // console.log(response.data.results);
       dispatch({
         type: FETCH_CHARACTER,
+        payload: response.data.results,
+      });
+    } catch (error) {
+      dispatch({
+        type: REJECT_CHARACTER,
+        error: error,
+      });
+    }
+  };
+};
+
+export const loadMoreCharacter = params => {
+  return async dispatch => {
+
+    try {
+      const response = await getRequest(CHARACTERS_URL, params);
+      // console.log(response.data.results);
+      dispatch({
+        type: LOAD_MORE,
         payload: response.data.results,
       });
     } catch (error) {
@@ -64,7 +84,6 @@ export const resetData = () => {
   };
 };
 
-// listenin sonuna gelindiğinde yeni karakterleri almak için action
 export const changeParams = (params) => {
   // console.log(">>>",params);
   return async dispatch => {

@@ -2,6 +2,7 @@ import {
   CHANGE_PARAMS,
   FETCH_CHARACTER,
   FETCH_SINGLECHARACTER,
+  LOAD_MORE,
   PENDING_CHARACTER,
   PENDING_SINGLECHARACTER,
   REJECT_CHARACTER,
@@ -16,9 +17,12 @@ const initialState = {
   singleCharacter: {}, // gelecek veri obje olduğu için boş obje tanımla
   pendingSingleCharacter: false,
   errorSingleCharacter: null,
-  params: {  // bu parametreyi, listeye istek atarken kullanacağız.
+  params: {
     page: 1,
-  }
+    status: null,
+    gender: null,
+    count:20
+  },
 };
 
 const characterReducer = (state = initialState, action) => {
@@ -64,15 +68,22 @@ const characterReducer = (state = initialState, action) => {
         ...state,
         pendingSingleCharacter: false,
         errorSingleCharacter: null,
-        singleCharacter: {}
+        singleCharacter: {},
       };
 
     case CHANGE_PARAMS:
       return {
         ...state,
-        params: action.params,
-        // bu sefer payload değil de params diye gönderdik
+        params: {...state.params, ...action.params},
+        // bu sefer payload değil de params diye gönderdik. obje olarak geldiği için {} şeklinde yaptık
       };
+
+    case LOAD_MORE:
+      return {
+        ...state,
+        characterList: [...state.characterList, ...action.payload],
+      };
+
     default:
       return state;
   }

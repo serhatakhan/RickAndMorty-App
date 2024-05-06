@@ -10,3 +10,4 @@ export const RESET_DATA = 'RESET_DATA';
 
 // listenin sonuna gelindiğinde yeni karakterleri almak için type tanımla
 export const CHANGE_PARAMS = 'CHANGE_PARAMS';
+export const LOAD_MORE = 'LOAD_MORE';
