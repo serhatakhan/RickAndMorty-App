@@ -1,44 +1,62 @@
-import React, {useEffect} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, TextInput} from 'react-native';
 import {screenStyle} from '../../styles/screensStyle';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  changeParams,
-  getCharacterList,
-} from '../../store/actions/charactersActions';
-import Spinner from '../../components/ui/spinner';
+import {changeParams, getCharacterList} from '../../store/actions/charactersActions';
 import SearchItem from '../../components/characters/searchItem';
+import Colors from '../../theme/colors';
+import CustomButton from '../../components/ui/customButton';
 
 const SearchCharacters = () => {
-  const {characterList, pending, params} = useSelector(state => state.characters);
+  const {characterList, params} = useSelector(state => state.characters);
+  const [searchText, setSearchText] = useState("")
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCharacterList(params));
-  }, [params]); // params verisi değiştiğinde tekrar istek at !
+  }, []);
+
+
+  const handleSubmit = () => {
+    dispatch(changeParams({name: searchText}))
+  }
 
   const ListHeaderComponent = () => {
     return (
-        <View><Text>Search</Text></View>
-    )
-  }
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <TextInput
+          value={searchText}
+          placeholder="search character..."
+          returnKeyType="search" // klavye açılınca bu inputun butonu ne olsun
+          clearButtonMode="while-editing"
+          onSubmitEditing={handleSubmit}
+          style={{
+            backgroundColor: Colors.WHITE,
+            width: '95%',
+            height: 42,
+            padding: 14,
+            borderWidth: 1.5,
+            borderRadius: 100,
+            borderColor: Colors.BGTAB,
+            marginBottom: 5,
+          }}
+          onChangeText={(text)=> {
+            setSearchText(text)
+          }}
+        />
+        {/* <CustomButton onPress={()=> handleSubmit()} title="Search" backColor={Colors.TABICON} /> */}
+      </View>
+    );
+  };
 
   return (
     <View style={screenStyle.container}>
-      {/* pending true ise spinner bas */}
-      {pending ? (
-        <Spinner />
-      ) : (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={characterList}
-          renderItem={({item}) => <SearchItem item={item} key={item.id} />}
-          ListHeaderComponent={ListHeaderComponent}
-          // ListFooterComponent={<Spinner />}
-          // onEndReachedThreshold={0.3}
-          // onEndReached={handleLoadMore}
-        />
-      )}
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={characterList}
+        renderItem={({item}) => <SearchItem item={item} key={item.id} />}
+        ListHeaderComponent={ListHeaderComponent}
+      />
     </View>
   );
 };

@@ -19,9 +19,10 @@ const initialState = {
   errorSingleCharacter: null,
   params: {
     page: 1,
+    count:20,
     status: null,
     gender: null,
-    count:20
+    name: null,
   },
 };
 
