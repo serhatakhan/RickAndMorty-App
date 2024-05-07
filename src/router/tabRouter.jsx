@@ -47,7 +47,7 @@ export default function TabNavigator() {
           },
         }}
       />
-      <Tab.Screen name={EPISODES} component={Episodes} />
+      <Tab.Screen name={EPISODES} component={Episodes} options={{headerShown: false}} />
       <Tab.Screen name={LOCATIONS} component={Locations} />
       <Tab.Screen name={SETTINGS} component={Settings} />
     </Tab.Navigator>
