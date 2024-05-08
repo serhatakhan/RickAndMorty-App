@@ -1,6 +1,6 @@
 # Rick and Morty App
 
-This project is a React Native application developed based on the popular TV show Rick and Morty. The application provides information about characters, episodes, and locations in the Rick and Morty universe.
+This project is a **React Native** application developed based on the popular TV show Rick and Morty. The application provides information about characters, episodes, and locations in the Rick and Morty universe.
 
 ## Features
 
