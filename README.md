@@ -22,3 +22,9 @@ This project is a **React Native** application developed based on the popular TV
 - Axios
 - Redux
 - Redux Thunk
+
+## Preview
+
+https://github.com/serhatakhan/RickAndMorty-App/assets/147662915/73a72f2c-b58a-4809-916c-b9b9a221f4a4
+
+
