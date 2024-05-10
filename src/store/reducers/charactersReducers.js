@@ -77,6 +77,8 @@ const characterReducer = (state = initialState, action) => {
         ...state,
         params: {...state.params, ...action.params},
         // bu sefer payload değil de params diye gönderdik. obje olarak geldiği için {} şeklinde yaptık
+        // ...state: Bu ifade, mevcut durumun bir kopyasını alır. Spread operatörü sayesinde, state içindeki diğer tüm özellikler bu kopyada yer alır.
+        // params: {...state.params, ...action.params}: Bu ifade, params özelliğini günceller. Öncelikle mevcut state içindeki params özelliğinin bir kopyasını alır (...state.params). Daha sonra, action.params içindeki değerleri de bu kopyaya ekler (...action.params).
       };
 
     case LOAD_MORE:
